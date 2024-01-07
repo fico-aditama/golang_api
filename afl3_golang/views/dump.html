@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contoh Search Bar Otomatis</title>
+    <style>
+        #search-container {
+            position: relative;
+            width: 300px;
+        }
+
+        #search-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #search-results {
+            position: absolute;
+            width: 100%;
+            max-height: 150px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            display: none;
+        }
+
+        .result-item {
+            padding: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="search-container">
+        <input type="text" id="search-input" placeholder="Cari sesuatu...">
+        <div id="search-results"></div>
+    </div>
+
+    <script>
+        const searchInput = document.getElementById('search-input');
+        const searchResults = document.getElementById('search-results');
+
+        // Data contoh untuk autocomplete
+        const data = ['Apel', 'Jeruk', 'Mangga', 'Pisang', 'Strawberry', 'Anggur', 'Nanas', 'Kiwi'];
+
+        // Fungsi untuk menampilkan hasil pencarian
+        function showResults(results) {
+            searchResults.innerHTML = '';
+
+            results.forEach(result => {
+                const item = document.createElement('div');
+                item.className = 'result-item';
+                item.textContent = result;
+
+                item.addEventListener('click', () => {
+                    searchInput.value = result;
+                    searchResults.style.display = 'none';
+                });
+
+                searchResults.appendChild(item);
+            });
+
+            searchResults.style.display = 'block';
+        }
+
+        // Event listener untuk input
+        searchInput.addEventListener('input', () => {
+            const searchTerm = searchInput.value.toLowerCase();
+            const filteredResults = data.filter(item => item.toLowerCase().includes(searchTerm));
+            showResults(filteredResults);
+        });
+
+        // Event listener untuk menutup hasil pencarian saat di luar input
+        document.addEventListener('click', (e) => {
+            if (!searchResults.contains(e.target) && e.target !== searchInput) {
+                searchResults.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
